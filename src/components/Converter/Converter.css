@@ -1,0 +1,46 @@
+.converter h1 {
+    text-align: center;
+}
+
+.converter .css-2b097c-container {
+    margin-bottom: 10px;
+}
+
+.converter input {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ececec;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+converter.disabled input {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.converter button {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    color: #222;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24.02px;
+    text-transform: uppercase;
+    padding: 7px 35px 8px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.converter button:hover {
+    color: #fff;
+    background-color: #1a0045;
+    transition: all .2s;
+}
+
+.converter button.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+}
