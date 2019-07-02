@@ -10,7 +10,6 @@
     background-color: #fff;
     padding: 10px;
     border: 1px solid #ececec;
-    margin-bottom: 20px;
     box-sizing: border-box;
     width: 100%;
 }
@@ -43,4 +42,14 @@ converter.disabled input {
 .converter button.disabled {
     pointer-events: none;
     opacity: 0.3;
+}
+
+p.error {
+    color: red;
+    text-align: right;
+    margin: 0;
+}
+
+.input-block {
+    margin-bottom: 10px;
 }
