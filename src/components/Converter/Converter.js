@@ -13,40 +13,44 @@ class Converter extends Component{
         roman_numbers: {M:1000, CM:900, D:500, CD:400, C:100, XC:90, L:50, XL:40, X:10, IX:9, V:5, IV:4, I:1}
 
 };
-
+    // clears result and errors
     clearResultAndErrors = () => {
         if(this.state.result !== null) this.setState({result: null});
         if(this.state.errorMessage !== null) this.setState({errorMessage: null});
     };
 
+    // handles selector change selection
     handleChangeSelection = (selectedOption) => {
        this.setState({selected_mode: selectedOption.value});
        this.clearResultAndErrors();
     };
-
+    // updates input value onto the state
+    // clears any unnecessary ui info
     updateInputValue = (e) => {
         this.setState({input_val: e.target.value});
         this.clearResultAndErrors();
     };
 
+    // checks for arabic number user input
+    // number must be whole
+    // number must be positive and not equal to zero
+    // number must be withing range [1-3999]
     handleArabicInputValidity = (input) => {
-        if(isNaN(input)) {
+        if(!RegExp('^[1-9]\\d*$').test(this.state.input_val)) {
             this.setState({errorMessage: 'Incorrect input'});
             return false;
         } else if(input > 3999) {
             this.setState({errorMessage: 'Number is too large'});
-            return false;
-        } else if(input <= 0) {
-            this.setState({errorMessage: 'Number must be positive and bigger than zero'});
             return false;
         }
 
         return true;
     };
 
+    // convert arabic to roman numeral system
     convertArabicToRoman = () => {
         let result = '';
-        let input = parseInt(this.state.input_val);
+        let input = parseFloat(this.state.input_val);
 
         if(this.handleArabicInputValidity(input)) {
             for(let i in this.state.roman_numbers) {
@@ -60,6 +64,9 @@ class Converter extends Component{
         }
     };
 
+    // reusable function for looping through roman_numers array
+    // used for finding roman letter in the array
+    // used by function formatRomanInput
     romanToArabicConverter = (letter) => {
         for(let i in this.state.roman_numbers) {
             if(letter === i) {
@@ -70,27 +77,8 @@ class Converter extends Component{
         return false;
     };
 
-    formatRomanInput = (input) => {
-        const inputArray = [];
-        let inputPosition = 0;
-
-        for(let i = 0; i < input.length; i++) {
-            if(i < inputPosition) continue;
-
-            if(input[i] === '_') {
-                inputArray.push(`${input[i]}${input[i + 1]}`);
-
-                if(input[i + 2] !== undefined) inputPosition = i + 2;
-                else break;
-            }
-            else inputArray.push(input[i]);
-        }
-
-        return inputArray;
-    };
-
+    // validates roman input
     validateRomanInput = (input) => {
-          console.log(input);
           const regex = RegExp('^M{0,3}(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$');
           const testResult = regex.test(input);
           if(!testResult) this.setState({errorMessage: 'Invalid roman numeral'});
@@ -98,10 +86,11 @@ class Converter extends Component{
           return testResult;
     };
 
+    // converts roman to arabic
     convertRomanToArabic = () => {
         const isValidInput = this.validateRomanInput(this.state.input_val.toUpperCase());
         if(isValidInput) {
-            const input = this.formatRomanInput(this.state.input_val.toUpperCase().split(''));
+            const input = this.state.input_val.toUpperCase().split('');
             let result = 0;
             let letterPosition = 0;
 
@@ -126,14 +115,14 @@ class Converter extends Component{
         }
     };
 
+    // launches on convert button click
+    // launches the correct conversion method
     convert = () => {
         if(this.state.selected_mode === 'roman_arabic') this.convertRomanToArabic();
         else if(this.state.selected_mode === 'arabic_roman') this.convertArabicToRoman();
     };
 
     render() {
-
-
         const buttonClass = this.state.input_val !== '' ? '' : 'disabled';
 
         return(
